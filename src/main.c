@@ -146,6 +146,7 @@ static int cansock(void)
 	int fd;
 	int res;
 	int e;
+	const char *ifname = "can0";
 
 	if(!(ifaces = array_alloc())) {
 		return(-1);
@@ -159,6 +160,8 @@ static int cansock(void)
 	}
 
 	memset(&addr, 0, sizeof(addr));
+	strcpy(ifr.ifr_name, ifname);                   
+ioctl(fd, SIOCGIFINDEX, &ifr);
 
 	if(bind(fd, (struct sockaddr*)&addr, sizeof(addr)) < 0) {
 		e = errno;
